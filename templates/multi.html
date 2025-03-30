@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Multi-Class Classification</title>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-image: url("static/images/multi.jpg");
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    .topnav {
+      background-color: #0da82e;
+      border-radius: 10px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 10px;
+    }
+
+    .topnav a {
+      float: right;
+      display: block;
+      color: #fff;
+      text-align: center;
+      padding: 0px 16px;
+      text-decoration: none;
+      font-size: 20px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 50px;
+    }
+
+    input[type="file"] {
+      padding: 10px 12px;
+      background-color: #0da82e;
+      color: white;
+      border-radius: 5px;
+      border: none;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-bottom: 40px;
+    }
+
+    form>img {
+      border: 6px solid #f3a109;
+      border-radius: 5px;
+      box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
+      margin-bottom: 20px;
+    }
+
+    button[type="submit"] {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: #0da82e;
+      color: #fff;
+      font-size: 18px;
+    }
+
+    .chatbot-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 300px;
+      height: 400px;
+      background-color: #f3f3f3;
+      border-radius: 10px;
+      box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-header {
+      background-color: #0da82e;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    }
+
+    .chat-body {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 10px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+    }
+
+    .chat-footer {
+      display: flex;
+      padding: 5px;
+      background-color: #eee;
+    }
+
+    .chat-footer input {
+      flex-grow: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .chat-footer button {
+      padding: 10px;
+      background-color: #0da82e;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      margin-left: 5px;
+      cursor: pointer;
+    }
+
+    .chat-footer button:hover {
+      background-color: #087820;
+    }
+
+    /* Save chat button inside chat */
+    #save-chat-btn {
+      background-color: #0b551c;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+      font-size: 12px;
+      margin-left: 5px;
+    }
+
+    #save-chat-btn:hover {
+      background-color: #1d7a30;
+    }
+
+    #clear-chat-btn {
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 5px 10px;
+      margin-top: 5px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    #clear-chat-btn:hover {
+      background-color: #b02a37;
+    }
+
+    #result {
+      color: red;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="topnav">
+    <a href="#">Multi-Class Classification</a>
+  </div>
+
+  <form method="post" enctype="multipart/form-data">
+    <input type="file" name="image" id="image-input" accept="image/*" required>
+    <img id="image-preview" width="300" height="300">
+    <button type="submit">Detect</button>
+    <h2 id="result"></h2>
+  </form>
+
+  <!-- Chatbot -->
+  <div class="chatbot-container">
+    <div class="chat-header"><span>Agriculture Assistant</span>
+      <button id="save-chat-btn">💾 Save Chat</button></div>
+    <div class="chat-body" id="chat-body"></div>
+    <div class="chat-footer">
+      <input type="text" id="chat-input" placeholder="Type your message...">
+      <button id="send-btn">Send</button>
+      <button id="clear-chat-btn">Clear Chat</button>
+    </div>
+  </div>
+
+  <script>
+    function display_result(result) {
+      document.getElementById('result').innerHTML = result.result;
+    }
+
+    $(function () {
+      function preview_image(event) {
+        document.getElementById('result').innerHTML = "";
+        var reader = new FileReader();
+        reader.onload = function () {
+          document.getElementById('image-preview').src = reader.result;
+        }
+        reader.readAsDataURL(event.target.files[0]);
+      }
+
+      $('#image-input').on('change', preview_image);
+
+      $('form').on('submit', function (e) {
+        e.preventDefault();
+        var form_data = new FormData(this);
+        $.ajax({
+          type: 'POST',
+          url: "/multi/multiPredict",
+          data: form_data,
+          cache: false,
+          contentType: false,
+          processData: false,
+          success: function (data) {
+            display_result(data);
+          }
+        });
+      });
+
+      // Chatbot functionality with welcome message and fetch request
+      const chatBody = $('#chat-body');
+      function displayMessage(sender, message) {
+        chatBody.append('<p><b>' + sender + ':</b> ' + message + '</p>');
+        chatBody.scrollTop(chatBody[0].scrollHeight); // Auto-scroll
+      }
+
+      // Display initial welcome messages when the page loads
+      displayMessage('Bot', 'Hello! Welcome to the Agriculture Assistant. I am here to help you with maize diseases and treatments!');
+      displayMessage('Bot', 'How can I help you today?');
+
+      // Handle user input and bot response
+      $('#send-btn').on('click', async function () {
+        var message = $('#chat-input').val();
+        if (message.trim() !== "") {
+          displayMessage('You', message);
+          $('#chat-input').val('');
+
+          try {
+            const response = await fetch("http://127.0.0.1:8001/chatbot/chat", {  // Ensure the port and path match the backend
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: message })
+            });
+
+            const data = await response.json();
+            displayMessage('Bot', data.response); // Display bot's response
+          } catch (error) {
+            displayMessage('Bot', 'Something went wrong. Please try again later.');
+          }
+        }
+      });
+
+      $('#clear-chat-btn').on('click', async function () {
+      try {
+        const response = await fetch("http://127.0.0.1:8001/chatbot/clear_chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" }
+        });
+        const data = await response.json();
+        $('#chat-body').html("");
+        displayMessage('Bot', 'Chat history has been cleared. How can I assist you?');
+      } catch (error) {
+        displayMessage('Bot', 'Failed to clear chat. Please try again.');
+      }
+    });
+
+      // Function to save chat history
+      
+
+      $(document).ready(function () {
+    // Function to save chat history
+    function saveChat() {
+        let userMessage = "";
+        let botResponse = "";
+
+        // Get the last user and bot messages
+        $("#chat-body p").each(function () {
+            let text = $(this).text();
+            if (text.startsWith("You:")) {
+                userMessage = text.replace("You:", "").trim();
+            } else if (text.startsWith("Bot:")) {
+                botResponse = text.replace("Bot:", "").trim();
+            }
+        });
+
+        // Ensure messages exist before saving
+        if (userMessage && botResponse) {
+            $.ajax({
+                type: "POST",
+                url: "http://127.0.0.1:8001/chatbot/save_chat",  // Ensure this matches your backend URL
+                contentType: "application/json",
+                data: JSON.stringify({
+                    user_message: userMessage,   // Ensure correct variable name
+                    bot_response: botResponse   // Ensure correct variable name
+                }),
+                success: function (response) {
+                    alert("Chat saved successfully at " + response.timestamp);
+                },
+                error: function (xhr) {
+                    alert("Failed to save chat. Error: " + xhr.responseText);
+                }
+            });
+        } else {
+            alert("No conversation found to save.");
+        }
+    }
+
+    // Attach event to Save Chat button
+    $("#save-chat-btn").on("click", saveChat);
+});
+
+    // Function to clear chat history
+    $('#clear-chat-btn').on('click', async function () {
+      try {
+        await fetch("http://127.0.0.1:8001/chatbot/clear_chat", { method: "POST" });
+        chatBody.html(""); // Clear UI chat display
+        alert("Chat history cleared.");
+      } catch (error) {
+        console.error("Error clearing chat:", error);
+      }
+    });
+
+      // Allow pressing "Enter" to send the message
+      $('#chat-input').on('keypress', function (e) {
+        if (e.key === 'Enter') {
+          $('#send-btn').click();
+        }
+      });
+    });
+  </script>
+
+</body>
+
+</html>
