@@ -1,0 +1,42 @@
+[
+    {
+        "name": "Gray Leaf Spot",
+        "about": "Gray Leaf Spot is a fungal disease that primarily affects maize leaves, reducing photosynthesis and yield.",
+        "symptoms": "Creates rectangular gray lesions on maize leaves, starting as small, light brown spots that enlarge.",
+        "treatment": "Apply fungicides containing strobilurins or triazoles. Rotate crops to reduce pathogen survival.",
+        "prevention": "Use resistant maize hybrids. Avoid dense planting to improve airflow and reduce moisture.",
+        "cause": "Caused by the fungus Cercospora zeae-maydis, thrives in warm, humid conditions."
+    },
+    {
+        "name": "Common Rust",
+        "about": "Common Rust is a fungal disease of maize that appears as rust-colored pustules on leaves, reducing plant vigor.",
+        "symptoms": "Reddish-brown pustules appear on both sides of maize leaves, later turning black.",
+        "treatment": "Apply fungicides such as azoxystrobin or propiconazole if infection is severe. Use resistant maize varieties.",
+        "prevention": "Plant early-maturing maize hybrids. Ensure proper field sanitation by removing crop debris.",
+        "cause": "Caused by the fungus Puccinia sorghi, spreads through airborne spores in humid conditions."
+    },
+    {
+        "name": "Corn Leaf Blight",
+        "about": "Corn Leaf Blight is a fungal infection that causes large lesions on maize leaves, affecting plant health and yield.",
+        "symptoms": "Elongated, tan-colored lesions with dark brown borders, spreading across leaves.",
+        "treatment": "Apply fungicides like mancozeb or copper-based treatments. Use crop rotation with non-host plants.",
+        "prevention": "Use disease-resistant maize varieties. Maintain good field drainage to avoid excess moisture.",
+        "cause": "Caused by Exserohilum turcicum (Northern Corn Leaf Blight) or Cochliobolus heterostrophus (Southern Corn Leaf Blight)."
+    },
+    {
+        "name": "Leaf Blight",
+        "about": "Corn Leaf Blight is a fungal infection that causes large lesions on maize leaves, affecting plant health and yield.",
+        "symptoms": "Elongated, tan-colored lesions with dark brown borders, spreading across leaves.",
+        "treatment": "Apply fungicides like mancozeb or copper-based treatments. Use crop rotation with non-host plants.",
+        "prevention": "Use disease-resistant maize varieties. Maintain good field drainage to avoid excess moisture.",
+        "cause": "Caused by Exserohilum turcicum (Northern Corn Leaf Blight) or Cochliobolus heterostrophus (Southern Corn Leaf Blight)."
+    },
+    {
+        "name": "Healthy Leaf",
+        "about": "A healthy maize leaf is free from disease symptoms, ensuring maximum photosynthesis and plant productivity.",
+        "symptoms": "Bright green leaves with no visible spots, lesions, or discoloration.",
+        "treatment": "No treatment required. Maintain optimal soil nutrients and proper irrigation.",
+        "prevention": "Ensure balanced fertilization, good field hygiene, and proper spacing for airflow.",
+        "cause": "Healthy growth conditions with no disease infection."
+    }
+]
