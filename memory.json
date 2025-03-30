@@ -1,0 +1,20 @@
+{
+    "last_disease": "",
+    "chat_history": [
+        {
+            "timestamp": "2025-03-30 23:11:51",
+            "user": "tell me about common rust",
+            "bot": "Common Rust is a fungal disease of maize that appears as rust-colored pustules on leaves, reducing plant vigor."
+        },
+        {
+            "timestamp": "2025-03-31 00:47:04",
+            "user": "Tell me about its prevention",
+            "bot": "Apply fungicides such as azoxystrobin or propiconazole if infection is severe. Use resistant maize varieties."
+        },
+        {
+            "timestamp": "2025-03-31 00:58:21",
+            "user": "tell me something",
+            "bot": "I'm sorry, I didn't understand that. Please ask about maize diseases or treatments."
+        }
+    ]
+}
